@@ -1,0 +1,12 @@
+<div class="form-group">
+  <label>Producto</label>
+  <input type="text" class="form-control" value="{{product.name}}" name="product-name" autocomplete="off" ng-model="product.name" />
+  <input type="hidden" value="{{product.id}}" name="product-id" />
+  <ul class="list-group" ng-show="showAutocomplete">
+    <li class="list-group-item"
+      ng-repeat="oproduct in products"
+      ng-click="selectProduct(oproduct)">
+      {{oproduct.name}}
+    </li>
+  </ul>
+</div>

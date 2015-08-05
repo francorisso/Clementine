@@ -1,0 +1,30 @@
+<product-input-search product="order.product"></product-input-search>
+
+<div class="form-group">
+  <label>Proveedor</label>
+  <select
+    name="provider"
+    class="form-control"
+    ng-model="order.provider"
+    ng-options="provider.name+' - $'+provider.price for provider in order.product.providers"
+    ></select>
+</div>
+
+<div class="form-group">
+  <label>Costo por unidad</label>
+  <input type="text" class="form-control" ng-model="order.provider.price" name="precio">
+</div>
+
+<div class="form-group">
+  <label>Cantidad en unidades</label>
+  <input type="text" class="form-control" ng-model="order.quantity" name="cantidad" ng-value="1">
+</div>
+
+<div class="form-group">
+  <label>Costo total</label>
+  <input type="text" class="form-control" value="{{priceTotal() | currency}}" name="ccc">
+</div>
+
+<div class="form-group">
+  <button class="btn btn-primary" type="button" ng-click="makeOrder(order)">Hacer Pedido</button>
+</div>

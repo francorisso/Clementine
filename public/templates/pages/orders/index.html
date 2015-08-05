@@ -1,0 +1,57 @@
+<h1>
+  {{title}}
+</h1>
+
+<ul class="nav nav-tabs">
+  <li
+    ng-repeat="stat in statuses"
+    ng-class="{'active' : status==stat.name}">
+    <a href="#/orders/{{stat.name}}">{{stat.label}}</a></li>
+</ul>
+
+<div style="border:1px solid #ccc; padding: 0 10px 10px 10px; background: #f2f2f2; margin: 10px 0 0 0;"
+  ng-repeat="order in orders" ng-class="{'hidden' : status!=order.status}">
+  <h2>
+    {{order.provider.name}}
+    <button class="btn btn-info pull-right" ng-click="showDetails(order)"
+    style="margin-left:10px;"
+    >
+      Detalles de pedido
+    </button>
+
+    <span class="pull-right">
+      <label>Change Status:</label>
+    </span>
+  </h2>
+  <table class="table table-bordered" ng-show="order.showDetails">
+    <tr>
+      <th>Producto</th>
+      <th>Precio por unidad</th>
+      <th>Cantidad</th>
+      <th>Precio Total</th>
+    </tr>
+    <tr ng-repeat="item in order.items">
+      <td>{{ item.product.name }}</td>
+      <td>{{ item.price | currency}}</td>
+      <td>{{ item.quantity }}</td>
+      <td>{{ item.price * item.quantity | currency}}</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td class="text-sucess" style="font-weight: bold;">
+        {{ order.priceTotal | currency }}
+      </td>
+    </tr>
+  </table>
+</div>
+
+<md-button
+  class="md-fab md-add"
+  aria-label="Agregar Pedido"
+  ng-click="navigateTo('/orders/create');">
+
+  <ng-md-icon icon="add" style="fill:#fff;"></ng-md-icon>
+
+</md-button>
