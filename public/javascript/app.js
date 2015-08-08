@@ -5,7 +5,7 @@ angular.module('Clementine',[
   'ngSanitize',
   'ngMdIcons'
 ])
-.controller('AppCtrl',function($scope, $mdUtil, $mdSidenav, $location){
+.controller('AppCtrl',function($scope, $mdUtil, $mdSidenav, $location, $mdToast){
   $scope.toggleLeft = buildToggler('left');
   /**
    * Build handler to open/close a SideNav; when animation finishes

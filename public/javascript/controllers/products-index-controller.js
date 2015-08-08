@@ -15,11 +15,6 @@ angular.module('Clementine')
         'Productos actualizados: ' + $scope.updated
       ].join('\n'));
     }
-    $scope.products = [];
-    Product.all()
-      .success(function(data){
-        $scope.products = data;
-      });
 
     $scope.timer = 0;
     $('input[name="product-name"]').on('keyup', function(e){
@@ -27,13 +22,8 @@ angular.module('Clementine')
       clearTimeout($scope.timer);
       $scope.timer = setTimeout(function(){
         $scope.products = Product.search(productName)
-          .success(function(data){
-            if (data.length>0) {
-              $scope.products = data;
-            }
-            else {
-              $scope.products = [];
-            }
+          .then(function(response){
+            return response.data;
           });
       }, 200);
     });

@@ -1,13 +1,12 @@
 angular.module('Clementine')
-.directive('orderAddForm', function(Product, Order){
+.directive('orderAddForm', function($filter, Product, Order){
   return {
     restrict : 'E',
     scope: {
-      order : '=',
-      message : '='
+      order : '='
     },
     templateUrl : 'templates/directives/order-add-form.html',
-    controller: function($scope){
+    controller: function($scope, $mdToast, $animate){
       $scope.order = {
         quantity    : 1,
         order_id    : 0,
@@ -15,15 +14,24 @@ angular.module('Clementine')
         product     : {},
         provider    : {}
       };
+
+      $scope.alertMessage = function(message) {
+        $mdToast.show(
+          $mdToast.simple()
+            .content(message)
+            .position('bottom right')
+            .hideDelay(3000)
+        );
+      };
     },
     link : function(scope, element, attrs){
       scope.timer = 0;
-      scope.priceTotal = function(){
-        if (scope.order.provider && typeof scope.order.provider.price==='undefined') {
-          return 0;
-        }
-        return scope.order.quantity * scope.order.provider.price;
-      };
+      scope.totalcost = 0;
+
+      scope.$watchGroup(['order.provider','order.quantity'], function(){
+        var amount = scope.order.quantity * scope.order.provider.price;
+        scope.totalcost = $filter('currency')(amount, '$', 2);
+      });
 
       scope.makeOrder = function(order){
         Order.save(order.provider.id)
@@ -31,7 +39,7 @@ angular.module('Clementine')
             order.id = orderResponse.id;
             Order.saveItem(order)
               .success(function(result){
-                scope.message = 'Item agregado';
+                scope.alertMessage('Item agregado');
                 scope.order = {
                   quantity    : 1,
                   order_id    : 0,

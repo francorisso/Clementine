@@ -1,42 +1,20 @@
-<h1>
-  {{title}}
-</h1>
-
-<ul class="nav nav-tabs">
-  <li role="presentation" class="active"><a ng-href="#/products">Listado</a></li>
-  <li role="presentation"><a ng-href="#/products/import">Importar</a></li>
-</ul>
-<div class="tab-content" style="padding: 10px 0 0 0;">
-
-  <div class="alert alert-success"
-    ng-show="{{ message!==false }}"
-    ng-bind-html="message"
-  ></div>
-  <div class="row">
-    <div class="form-group col-xs-9">
-      <input type="text" class="form-control" placeholder="Search" name="product-name" autocomplete="off">
-    </div>
+<md-toolbar md-scroll-shrink>
+  <div class="md-toolbar-tools">
+    <h3>
+      <span>{{title}}</span>
+    </h3>
   </div>
+</md-toolbar>
 
-
-  <md-content>
-    <md-list>
-      <md-list-item class="md-3-line" ng-repeat="product in products">
-        <div class="md-list-item-text">
-          <h3>{{ product.name }}</h3>
-          <p>{{ product.code }}</p>
-          <md-chips ng-model="product.providers" readonly="true">
-            <md-chip-template>
-              {{ $chip.name }} <i>{{ $chip.price | currency}}</i>
-            </md-chip-template>
-          </md-chips>
-        </div>
-      </md-list-item>
-      <md-divider></md-divider>
-    </md-list>
-  </md-content>
-
-
-
-
-</div>
+<md-tabs md-dynamic-height md-border-bottom>
+  <md-tab label="Listado">
+    <md-content class="md-padding">
+      <product-list></product-list>
+    </md-content class="md-padding">
+  </md-tab>
+  <md-tab label="Importar">
+    <md-content class="md-padding">
+      <product-import products="products"></product-import>
+    </md-content class="md-padding">
+  </md-tab>
+</md-tabs>

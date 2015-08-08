@@ -1,5 +1,5 @@
 angular.module('Clementine')
-.directive('productInputSearch', function(Product){
+.directive('productInputSearch', function($q, Product){
   return {
     restrict : 'E',
     scope: {
@@ -8,34 +8,18 @@ angular.module('Clementine')
     require: '^orderAddForm',
     templateUrl : 'templates/directives/product-input-search.html',
     link : function(scope, element, attrs, orderAddForm){
-      scope.showAutocomplete = false;
-      scope.products     = [];
-      scope.timer        = 0;
-      element.find('input[name="product-name"]').on('keyup', function(e){
-        clearTimeout(scope.timer);
-        scope.timer = setTimeout(function(){
-          scope.products = Product.search(scope.product.name)
-            .success(function(data){
-              if (data.length>0) {
-                scope.showAutocomplete = true;
-                scope.products = data;
-              }
-              else {
-                scope.products = [];
-                scope.hideAutocomplete();
-              }
-              scope.timerAutocomplete = setTimeout(scope.hideAutocomplete, 3000);
-            });
-        }, 500);
-      });
+      scope.promise = null;
+      scope.products = [];
 
-      scope.hideAutocomplete = function(){
-        scope.showAutocomplete = false;
+      scope.searchText = function(searchTerm) {
+        scope.products = Product.search(searchTerm)
+          .then(function(response){
+            return response.data;
+          });
       };
 
       scope.selectProduct = function(product) {
-        scope.product   = product;
-        scope.showAutocomplete = false;
+        scope.product = product;
       };
     }
   };

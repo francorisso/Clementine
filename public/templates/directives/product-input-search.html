@@ -1,12 +1,20 @@
-<div class="form-group">
-  <label>Producto</label>
-  <input type="text" class="form-control" value="{{product.name}}" name="product-name" autocomplete="off" ng-model="product.name" />
-  <input type="hidden" value="{{product.id}}" name="product-id" />
-  <ul class="list-group" ng-show="showAutocomplete">
-    <li class="list-group-item"
-      ng-repeat="oproduct in products"
-      ng-click="selectProduct(oproduct)">
-      {{oproduct.name}}
-    </li>
-  </ul>
-</div>
+<md-content layout-padding>
+  <md-autocomplete
+    md-no-cache="true"
+    md-search-text="product.name"
+    md-search-text-change="searchText(product.name)"
+    md-items="item in products"
+    md-item-text="item.name"
+    md-selected-item-change="selectProduct(item)"
+    md-min-length="1"
+    placeholder="Producto"
+    required>
+    <md-item-template>
+      <span>{{item.name}}</span>
+      <span>{{item.id}}</span>
+    </md-item-template>
+    <md-not-found>
+    No matches found for "{{product.name}}".
+    </md-not-found>
+  </md-autocomplete>
+</md-content>

@@ -21,7 +21,7 @@ class ProductController extends Controller
   public function index(Request $request)
   {
     $searchTerm = $request->input('searchTerm', null);
-    $limit = $request->input('limit', null);
+    $limit = $request->input('limit', 10);
 
     $products = Product::orderBy('name');
     if (!empty($searchTerm)) {

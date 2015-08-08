@@ -1,30 +1,39 @@
-<product-input-search product="order.product"></product-input-search>
+<form ng-submit="makeOrder(order)">
+  <product-input-search product="order.product"></product-input-search>
 
-<div class="form-group">
-  <label>Proveedor</label>
-  <select
-    name="provider"
-    class="form-control"
-    ng-model="order.provider"
-    ng-options="provider.name+' - $'+provider.price for provider in order.product.providers"
-    ></select>
-</div>
+  <md-content layout-padding>
+    <md-select ng-model="order.provider" placeholder="Proveedor" class="cm-material-select" flex required>
+      <md-option ng-repeat="provider in order.product.providers" ng-value="provider" flex>
+        <strong>{{provider.name}}</strong><br />
+        $ {{ provider.price }}
+      </md-option>
+    </md-select>
+  </md-content>
 
-<div class="form-group">
-  <label>Costo por unidad</label>
-  <input type="text" class="form-control" ng-model="order.provider.price" name="precio">
-</div>
+  <md-content layout-padding>
+    <md-input-container>
+      <label>Costo por unidad</label>
+      <input ng-model="order.provider.price" flex required />
+    </md-input-container>
+  </md-content>
 
-<div class="form-group">
-  <label>Cantidad en unidades</label>
-  <input type="text" class="form-control" ng-model="order.quantity" name="cantidad" ng-value="1">
-</div>
+  <md-content layout-padding>
+    <md-input-container>
+      <label>Cantidad en unidades</label>
+      <input ng-model="order.quantity" flex required />
+    </md-input-container>
+  </md-content>
 
-<div class="form-group">
-  <label>Costo total</label>
-  <input type="text" class="form-control" value="{{priceTotal() | currency}}" name="ccc">
-</div>
+  <md-content layout-padding>
+    <md-input-container>
+      <label>Costo total</label>
+      <input ng-model="totalcost" flex disabled />
+    </md-input-container>
+  </md-content>
 
-<div class="form-group">
-  <button class="btn btn-primary" type="button" ng-click="makeOrder(order)">Hacer Pedido</button>
-</div>
+  <md-content layout-padding>
+    <md-button class="md-raised md-primary">
+      Guardar
+    </md-button>
+  </md-content>
+</form>

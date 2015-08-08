@@ -1,0 +1,51 @@
+
+<md-toolbar class="md-warn">
+  <div class="md-toolbar-tools">
+    <p>Las columnas se cuentan asi: A=0, B=1, C=2, etc.</p>
+  </div>
+</md-toolbar>
+
+<form action="/api/product" method="post" enctype="multipart/form-data">
+  <input type="hidden" name="_token" value="{{token}}">
+
+  <md-content layout-padding>
+    <label>Archivo XLS</label>
+    <md-input-container>
+      <input type="file" name="pdf" flex />
+    </md-input-container>
+  </md-content>
+
+  <md-content layout-padding>
+    <md-input-container>
+      <label>Columna donde está el codigo</label>
+      <input type="text" name="codeColumn" flex />
+    </md-input-container>
+  </md-content>
+
+  <md-content layout-padding>
+    <md-input-container>
+      <label>Columna donde está el nombre del producto</label>
+        <input type="text" name="nameColumn" flex />
+    </md-input-container>
+  </md-content>
+
+  <md-content layout-padding>
+    <md-input-container>
+      <label>Columna donde está el proveedor</label>
+      <input type="text" name="providerColumn" flex />
+    </md-input-container>
+  </md-content>
+
+  <md-content layout-padding>
+    <md-input-container>
+      <label>Columna donde está el precio </label>
+        <input type="text" name="priceColumn" flex />
+    </md-input-container>
+  </md-content>
+
+  <md-content layout-padding>
+    <md-button class="md-raised md-primary">
+      Guardar
+    </md-button>
+  </md-content>
+</form>

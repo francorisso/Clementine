@@ -1,9 +1,9 @@
 <html ng-app="Clementine">
   <head>
     <title>Clementine</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/stylesheets/screen.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
   </head>
@@ -48,10 +48,8 @@
         </md-list>
       </md-content>
     </md-sidenav>
-    <md-content>
-      <div ng-view></div>
-    </md-content>
 
+    <div ng-view></div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
@@ -67,10 +65,11 @@
     <script src="/javascript/controllers/orders-index-controller.js"></script>
     <script src="/javascript/controllers/orders-add-controller.js"></script>
     <script src="/javascript/controllers/products-index-controller.js"></script>
-    <script src="/javascript/controllers/products-import-controller.js"></script>
     <script src="/javascript/controllers/proveedores-index-controller.js"></script>
     <script src="/javascript/directives/order-add-form.js"></script>
     <script src="/javascript/directives/product-input-search.js"></script>
+    <script src="/javascript/directives/product-list.js"></script>
+    <script src="/javascript/directives/product-import.js"></script>
     <script src="/javascript/services/product.js"></script>
     <script src="/javascript/services/order.js"></script>
   </body>

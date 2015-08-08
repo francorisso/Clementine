@@ -1,0 +1,16 @@
+<md-content>
+  <md-list>
+    <md-list-item class="md-3-line" ng-repeat="product in products">
+      <div class="md-list-item-text">
+        <h3>{{ product.name }}</h3>
+        <p>{{ product.code }}</p>
+        <md-chips ng-model="product.providers" readonly="true">
+          <md-chip-template>
+            {{ $chip.name }} <i>{{ $chip.price | currency}}</i>
+          </md-chip-template>
+        </md-chips>
+      </div>
+    </md-list-item>
+    <md-divider></md-divider>
+  </md-list>
+</md-content>
