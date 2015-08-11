@@ -9,12 +9,17 @@
 <md-tabs md-dynamic-height md-border-bottom>
   <md-tab label="Listado">
     <md-content class="md-padding">
-      <product-list></product-list>
-    </md-content class="md-padding">
+      <md-input-container md-no-float>
+        <input ng-model="searchTerm" type="text" placeholder="Nombre del producto">
+      </md-input-container>
+    </md-content>
+    <md-content class="md-padding">
+      <product-list search-term="searchTerm"></product-list>
+    </md-content>
   </md-tab>
   <md-tab label="Importar">
-    <md-content class="md-padding">
+    <md-content>
       <product-import products="products"></product-import>
-    </md-content class="md-padding">
+    </md-content>
   </md-tab>
 </md-tabs>

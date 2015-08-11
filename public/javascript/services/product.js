@@ -2,6 +2,9 @@ angular.module('Clementine')
 .factory('Product', function ProductFactory($http){
   return {
     search : function(searchTerm){
+      if (typeof searchTerm==='undefined') {
+        searchTerm = null;
+      }
       return $http({
         method : 'GET',
         url    : '/api/product',
@@ -9,12 +12,6 @@ angular.module('Clementine')
           limit : 10,
           searchTerm : searchTerm
         }
-      });
-    },
-    all : function(){
-      return $http({
-        method : 'GET',
-        url    : '/api/product'
       });
     }
   };

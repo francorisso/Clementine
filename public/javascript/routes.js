@@ -21,8 +21,8 @@ angular.module('Clementine')
       controller  : 'ProductsIndexController'
     })
     .when('/products/import', {
-      templateUrl : '/templates/pages/products/import.html',
-      controller  : 'ProductsImportController'
+      templateUrl : '/templates/pages/products/index.html',
+      controller  : 'ProductsIndexController'
     })
     .when('/',{
       redirectTo  : '/orders'

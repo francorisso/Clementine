@@ -4,68 +4,16 @@
 
 <ul class="nav nav-tabs">
   <li
-    ng-repeat="stat in statuses"
+
     ng-class="{'active' : status==stat.name}">
-    <a href="#/orders/{{stat.name}}">{{stat.label}}</a></li>
+    <a href="#/orders/">{{stat.label}}</a></li>
 </ul>
 
-<md-card ng-repeat="order in orders" ng-class="{'hidden' : status!=order.status}">
-  <md-toolbar>
-    <div class="md-toolbar-tools">
-      <h2 class="md-title">{{order.provider.name}}</h2>
-      <span flex></span>
-      <md-button
-        aria-label="More"
-        class="md-icon-button"
-        ng-click="showDetails(order)">
-
-        <ng-md-icon ng-hide="order.showDetails" icon="expand_more" style="fill:#fff;"></ng-md-icon>
-        <ng-md-icon ng-show="order.showDetails" icon="expand_less" style="fill:#fff;"></ng-md-icon>
-      </md-button>
-    </div>
-  </md-toolbar>
-  <md-card-content ng-show="order.showDetails">
-    <md-menu md-offset="0 -7">
-      <md-button aria-label="Open menu" class="md-icon-button" ng-click="$mdOpenMenu()">
-        <ng-md-icon icon="more_vert" style="fill:#fff;"></ng-md-icon>
-      </md-button>
-      <md-menu-content width="2">
-        <md-menu-item>
-          <md-button ng-click="showDetails(order)">
-            <span md-menu-align-target>Detalles</span>
-          </md-button>
-        </md-menu-item>
-        <md-menu-item>
-          <md-button ng-click="showDetails(order)">
-            <span md-menu-align-target>C</span>
-          </md-button>
-        </md-menu-item>
-      </md-menu-content>
-    </md-menu>
-    <table class="table table-bordered">
-      <tr>
-        <th>Producto</th>
-        <th>Precio por unidad</th>
-        <th>Cantidad</th>
-        <th>Precio Total</th>
-      </tr>
-      <tr ng-repeat="item in order.items">
-        <td>{{ item.product.name }}</td>
-        <td>{{ item.price | currency}}</td>
-        <td>{{ item.quantity }}</td>
-        <td>{{ item.price * item.quantity | currency}}</td>
-      </tr>
-      <tr>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td class="text-sucess" style="font-weight: bold;">
-          {{ order.priceTotal | currency }}
-        </td>
-      </tr>
-    </table>
-  </md-card-content>
-</md-card>
+<md-tabs md-dynamic-height md-border-bottom>
+  <md-tab ng-repeat="stat in statuses" label="{{stat.label}}">
+    <order-list-row status=stat.name></order-list-row>
+  </md-tab>
+</md-tabs>
 
 <md-button
   class="md-fab cm-btn-add"

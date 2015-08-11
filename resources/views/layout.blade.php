@@ -36,9 +36,6 @@
           <md-list-item ng-click="navigateTo('/providers')">
             Proveedores
           </md-list-item>
-          <md-list-item ng-click="navigateTo('/products/import')">
-            Importar Productos
-          </md-list-item>
 
           <md-divider ></md-divider>
 
@@ -67,6 +64,7 @@
     <script src="/javascript/controllers/products-index-controller.js"></script>
     <script src="/javascript/controllers/proveedores-index-controller.js"></script>
     <script src="/javascript/directives/order-add-form.js"></script>
+    <script src="/javascript/directives/order-list-row.js"></script>
     <script src="/javascript/directives/product-input-search.js"></script>
     <script src="/javascript/directives/product-list.js"></script>
     <script src="/javascript/directives/product-import.js"></script>
