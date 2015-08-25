@@ -1,19 +1,18 @@
-<h1>
-  {{title}}
-</h1>
+<md-toolbar md-scroll-shrink>
+  <div class="md-toolbar-tools">
+    <h3>
+      <span>{{title}}</span>
+    </h3>
+    <span flex></span>
+    <md-select placeholder="State" ng-model="status">
+      <md-option ng-repeat="stat in statuses" value="{{stat.name}}">
+        {{stat.label}}
+      </md-option>
+    </md-select>
+  </div>
+</md-toolbar>
 
-<ul class="nav nav-tabs">
-  <li
-
-    ng-class="{'active' : status==stat.name}">
-    <a href="#/orders/">{{stat.label}}</a></li>
-</ul>
-
-<md-tabs md-dynamic-height md-border-bottom>
-  <md-tab ng-repeat="stat in statuses" label="{{stat.label}}">
-    <order-list-row status=stat.name></order-list-row>
-  </md-tab>
-</md-tabs>
+<order-list-row status=status></order-list-row>
 
 <md-button
   class="md-fab cm-btn-add"

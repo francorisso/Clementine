@@ -20,6 +20,10 @@ angular.module('Clementine')
       templateUrl : '/templates/pages/products/index.html',
       controller  : 'ProductsIndexController'
     })
+    .when('/stats', {
+      templateUrl : '/templates/pages/stats/index.html',
+      controller  : 'StatsIndexController'
+    })
     .when('/products/import', {
       templateUrl : '/templates/pages/products/index.html',
       controller  : 'ProductsIndexController'

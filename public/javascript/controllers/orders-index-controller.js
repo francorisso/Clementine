@@ -1,6 +1,6 @@
 angular.module('Clementine')
 .controller('OrdersIndexController', function($scope, $routeParams, $http, Order){
-    $scope.title    = 'Pedido';
+    $scope.title    = 'Pedidos';
     $scope.status   = $routeParams.status;
     $scope.statuses = [
       {

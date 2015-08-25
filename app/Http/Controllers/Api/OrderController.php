@@ -19,11 +19,22 @@ class OrderController extends Controller
    *
    * @return Response
    */
-  public function index()
+  public function index(Request $request)
   {
-    $orders = Order::all();
+    $status = $request->input('status', null);
+    if (!empty($status)) {
+      $orders = Order::where('status', '=', $status)
+        ->orderBy('created_at')
+        ->get();
+    }
+    else {
+      $orders = Order::all();
+    }
+
     foreach ($orders as $order) {
-      $items = OrderItem::where('order_id','=',$order->id)->get();
+      $items = OrderItem::where('order_id','=',$order->id)
+        ->orderBy('created_at')
+        ->get();
       $priceTotal = 0;
       foreach ($items as $item) {
         $priceTotal += ($item->price * $item->quantity);
@@ -100,9 +111,25 @@ class OrderController extends Controller
    */
   public function update(Request $request, $id)
   {
-    $statusNew = $request->input('status_new', null);
+    $statusNew = $request->input('status', null);
 
     $order = Order::findOrFail($id);
+    switch ($statusNew) {
+      case 'pending':
+        $order->date_required  = 0;
+        $order->date_delivered = 0;
+        break;
+      case 'required':
+        $order->date_required  = date('Y-m-d H:i:s');
+        $order->date_delivered = 0;
+        break;
+      case 'delivered':
+        $order->date_delivered = date('Y-m-d H:i:s');
+        break;
+      case 'canceled':
+        $order->date_delivered = date('Y-m-d H:i:s');
+        break;
+    }
     $order->status = $statusNew;
     $order->save();
   }

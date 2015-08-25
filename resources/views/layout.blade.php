@@ -4,8 +4,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/stylesheets/screen.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.10.0/angular-material.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   </head>
   <body ng-controller="AppCtrl">
     <md-toolbar>
@@ -47,6 +48,7 @@
     </md-sidenav>
 
     <div ng-view></div>
+    <md-content style="height:90px;"></md-content>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
@@ -55,7 +57,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-route.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-cookies.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-sanitize.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.10.0/angular-material.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular-material-icons/0.5.0/angular-material-icons.min.js"></script>
     <script src="/javascript/app.js"></script>
     <script src="/javascript/routes.js"></script>
@@ -63,12 +65,17 @@
     <script src="/javascript/controllers/orders-add-controller.js"></script>
     <script src="/javascript/controllers/products-index-controller.js"></script>
     <script src="/javascript/controllers/proveedores-index-controller.js"></script>
+    <script src="/javascript/controllers/stats-index-controller.js"></script>
     <script src="/javascript/directives/order-add-form.js"></script>
     <script src="/javascript/directives/order-list-row.js"></script>
     <script src="/javascript/directives/product-input-search.js"></script>
     <script src="/javascript/directives/product-list.js"></script>
     <script src="/javascript/directives/product-import.js"></script>
+    <script src="/javascript/directives/chart/product.js"></script>
+    <script src="/javascript/directives/chart/provider-sales.js"></script>
     <script src="/javascript/services/product.js"></script>
     <script src="/javascript/services/order.js"></script>
+    <script src="/javascript/services/provider.js"></script>
+    <script src="/javascript/services/stats.js"></script>
   </body>
 </html>

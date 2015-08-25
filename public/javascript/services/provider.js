@@ -1,13 +1,11 @@
 angular.module('Clementine')
-.factory('Order', function OrderFactory($http){
+.factory('Provider', function OrderFactory($http){
   return {
-    get : function(status){
+    getStats : function(parameters){
       return $http({
         method : 'GET',
-        url    : '/api/order',
-        params : {
-          status : status
-        }
+        url    : '/api/provider',
+        params : parameters
       });
     },
     save : function(provider_id){
