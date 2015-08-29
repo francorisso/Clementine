@@ -77,5 +77,6 @@
     <script src="/javascript/services/order.js"></script>
     <script src="/javascript/services/provider.js"></script>
     <script src="/javascript/services/stats.js"></script>
+    <script src="/javascript/services/token-generator.js"></script>
   </body>
 </html>
