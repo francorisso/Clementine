@@ -1,4 +1,5 @@
-/vendor
-/node_modules
+vendor
+node_modules
+config/app.php
 Homestead.yaml
 .env
