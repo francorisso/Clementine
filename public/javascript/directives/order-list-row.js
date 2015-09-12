@@ -64,8 +64,6 @@ angular.module('Clementine')
             scope.orders = response.data;
           });
       };
-
-      scope.load();
     }
   };
 });

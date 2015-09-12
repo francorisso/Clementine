@@ -1,37 +1,37 @@
 angular.module('Clementine')
-.directive('chartProduct', function($timeout, Stats){
+.directive('chartProvider', function($timeout, Stats){
   return {
     restrict : 'E',
     scope: {
       title     : '@',
       graphType : '@',
-      metric    : '@',
+      metric    : '@'
     },
     templateUrl : 'templates/directives/chart.html',
-    link: function(scope, element, attrs){
+    link : function(scope, element, attrs){
       scope.chart = null;
-
       scope.graphOpts = {};
-      scope.chartName = 'product-'+ scope.metric + '-' + scope.graphType;
+      scope.chartName = 'provider-'+ scope.metric + '-' + scope.graphType;
       scope.drawSpace = 'chart-' + scope.chartName;
 
       google.load('visualization', '1', {
         packages : ['corechart'],
         callback : function() {
-          scope.drawChart();
+          scope.$watchGroup(['stat','metric'], function(){
+            scope.drawChart();
+          });
         }
       });
 
       scope.drawChart = function(){
         // Create the data table.
         var data = new google.visualization.DataTable();
-
         scope.graphOpts = {
           'metric'      : scope.metric,
           'graphType'   : scope.graphType,
           'title'       : scope.title
         };
-        Stats.products(scope.graphOpts)
+        Stats.providers(scope.graphOpts)
           .then(function(response){
             //TODO: change this according to resolution
             var width = 760;

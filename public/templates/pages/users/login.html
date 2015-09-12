@@ -1,0 +1,24 @@
+<md-toolbar md-scroll-shrink>
+  <div class="md-toolbar-tools">
+    <h3>
+      <span>{{title}}</span>
+    </h3>
+  </div>
+</md-toolbar>
+<form ng-submit="login(user)">
+  <md-content class="md-padding">
+    <md-input-container>
+      <label>Email</label>
+      <input ng-model="user.email" type="text" ng-required="true">
+    </md-input-container>
+
+    <md-input-container>
+      <label>Password</label>
+      <input ng-model="user.password" type="password" ng-required="true">
+    </md-input-container>
+
+    <section layout="row" layout-sm="column" layout-wrap>
+      <md-button class="md-raised md-primary">Login</md-button>
+    </section>
+  </md-content>
+</form>

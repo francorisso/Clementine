@@ -7,20 +7,23 @@
 </md-toolbar>
 
 <h2>Productos</h2>
-<div class="row">
-  <!-- TODO: split the title in configurable variables to change using a dropdown-->
-  <div class="col-xs-12 col-md-12">
-    <product graph-type="general_top" icon-help={class:".fa.fa-question,",text:"Magicamente calculada."} title="Clasificacion general::icon-help::: mejores 5: ultimos 6 meses"></product>
-  </div>
-  <div class="col-xs-12 col-md-12">
-    <product graph-type="general_last" icon-help={class:".fa.fa-question,",text:"Magicamente calculada"} title="Clasificacion general::icon-help::: peores 5: ultimos 6 meses"></product>
-  </div>
-</div>
+<!-- TODO: split the title in configurable variables to change using a dropdown-->
 <div>
   <div class="col-xs-12 col-md-12">
-    <product graph-type="top" title="Ingreso Mensual: mejores 5: ultimos 6 meses"></product>
+    <chart-product graph-type="top" title="Ingreso Mensual: mejores 5: ultimos 6 meses" metric="sales"></chart-product>
   </div>
   <div class="col-xs-12 col-md-12">
-    <product graph-type="last" title="Ingreso Mensual: peores 5: ultimos 6 meses"></product>
+    <chart-product graph-type="last" title="Ingreso Mensual: peores 5: ultimos 6 meses" metric="sales"></chart-product>
+  </div>
+</div>
+
+<h2>Proveedores</h2>
+<!-- TODO: split the title in configurable variables to change using a dropdown-->
+<div>
+  <div class="col-xs-12 col-md-12">
+    <chart-provider graph-type="top" title="Ingreso Mensual: mejores 5: ultimos 6 meses" metric="sales"></chart-provider>
+  </div>
+  <div class="col-xs-12 col-md-12">
+    <chart-provider graph-type="last" title="Ingreso Mensual: peores 5: ultimos 6 meses" metric="sales"></chart-provider>
   </div>
 </div>

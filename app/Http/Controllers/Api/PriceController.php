@@ -8,19 +8,19 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Models\Order;
-use App\Models\Price;
 use App\Models\OrderItem;
+use App\Models\Provider;
+use App\Models\Product;
 
-class OrderItemController extends Controller
+class PriceController extends Controller
 {
   /**
    * Display a listing of the resource.
    *
    * @return Response
    */
-  public function index()
+  public function index(Request $request)
   {
-    //
   }
 
   /**
@@ -41,41 +41,24 @@ class OrderItemController extends Controller
    */
   public function store(Request $request)
   {
-    $orderId   = $request->input('order_id');
-    $productId = $request->input('product_id');
-    $price     = $request->input('price');
-    $quantity  = $request->input('quantity');
-
-    $orderItem = OrderItem::where('product_id','=',$productId)
-      ->where('order_id', '=', $orderId)
-      ->first();
-    if (empty($orderItem)) {
-      $orderItem = new OrderItem;
-      $orderItem->order_id    = $orderId;
-      $orderItem->product_id  = $productId;
-      $orderItem->quantity    = $quantity;
+    $priceNew   = $request->input('price');
+    $productId  = $request->input('product_id');
+    $providerId = $request->input('provider_id');
+    if (empty($productId) || empty($providerId)) {
+      throw new Exception('Missing parameters');
     }
-    else {
-      $orderItem->quantity = $orderItem->quantity + $quantity;
-    }
-    $orderItem->price = $price;
-    $orderItem->save();
 
-    $order = Order::find($orderItem->order_id);
-
-    $price = Price::where('product_id', '=', $orderItem->product_id)
-      ->where('provider_id', '=', $order->provider_id)
+    $price = Price::where('product_id', '=', $productId)
+      ->where('provider_id', '=', $providerId)
       ->orderBy('created_at','desc')
       ->first();
-    if (empty($price) || $price->price!=$orderItem->price) {
+    if (empty($price) || $price->price!=$price) {
       $price = new Price;
-      $price->product_id  = $orderItem->product_id;
-      $price->provider_id = $order->provider_id;
-      $price->price = $orderItem->price;
+      $price->product_id  = $productId;
+      $price->provider_id = $providerId;
+      $price->price = $priceNew;
       $price->save();
     }
-
-    return response()->json($orderItem);
   }
 
   /**
@@ -109,7 +92,6 @@ class OrderItemController extends Controller
    */
   public function update(Request $request, $id)
   {
-    //
   }
 
   /**

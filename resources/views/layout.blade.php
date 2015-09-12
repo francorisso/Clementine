@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.10.0/angular-material.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      var __token = '{{ csrf_token() }}';
+    </script>
   </head>
   <body ng-controller="AppCtrl">
     <md-toolbar>
@@ -17,6 +20,9 @@
         <h2>
           <span>Clementine</span>
         </h2>
+        <md-button class="md-icon-button" aria-label="Logout" ng-click="navigateTo('/logout')">
+          <ng-md-icon icon="logout" style="fill:#fff"></ng-md-icon>
+        </md-button>
       </div>
     </md-toolbar>
     <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
@@ -64,19 +70,24 @@
     <script src="/javascript/controllers/orders-index-controller.js"></script>
     <script src="/javascript/controllers/orders-add-controller.js"></script>
     <script src="/javascript/controllers/products-index-controller.js"></script>
-    <script src="/javascript/controllers/proveedores-index-controller.js"></script>
+    <script src="/javascript/controllers/providers-index-controller.js"></script>
     <script src="/javascript/controllers/stats-index-controller.js"></script>
+    <script src="/javascript/controllers/user-login-controller.js"></script>
+    <script src="/javascript/controllers/user-logout-controller.js"></script>
     <script src="/javascript/directives/order-add-form.js"></script>
     <script src="/javascript/directives/order-list-row.js"></script>
     <script src="/javascript/directives/product-input-search.js"></script>
     <script src="/javascript/directives/product-list.js"></script>
     <script src="/javascript/directives/product-import.js"></script>
+    <script src="/javascript/directives/provider-list.js"></script>
     <script src="/javascript/directives/chart/product.js"></script>
-    <script src="/javascript/directives/chart/provider-sales.js"></script>
+    <script src="/javascript/directives/chart/provider.js"></script>
     <script src="/javascript/services/product.js"></script>
     <script src="/javascript/services/order.js"></script>
     <script src="/javascript/services/provider.js"></script>
     <script src="/javascript/services/stats.js"></script>
+    <script src="/javascript/services/user.js"></script>
     <script src="/javascript/services/token-generator.js"></script>
+    <script src="/javascript/services/auth-interceptor.js"></script>
   </body>
 </html>

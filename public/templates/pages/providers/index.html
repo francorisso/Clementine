@@ -1,0 +1,16 @@
+<md-toolbar md-scroll-shrink>
+  <div class="md-toolbar-tools">
+    <h3>
+      <span>{{title}}</span>
+    </h3>
+  </div>
+</md-toolbar>
+
+<md-content class="md-padding">
+  <md-input-container md-no-float>
+    <input ng-model="searchTerm" type="text" placeholder="Nombre del proveedor">
+  </md-input-container>
+</md-content>
+<md-content class="md-padding">
+  <provider-list search-term="searchTerm"></provider-list>
+</md-content>

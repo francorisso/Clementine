@@ -15,8 +15,17 @@ Route::get('/', function () {
   return view('layout');
 });
 
-Route::group(['prefix' => 'api', 'namespace' => 'Api'], function(){
+Route::controllers([
+  'auth'      => 'Auth\AuthController',
+  'password'  => 'Auth\PasswordController',
+]);
 
+Route::group([
+  'prefix' => 'api',
+  'namespace' => 'Api',
+  'middleware' => 'auth'
+],
+function(){
   Route::resource('product', 'ProductController');
   Route::resource('order', 'OrderController');
   Route::resource('order-item', 'OrderItemController');

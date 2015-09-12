@@ -1,12 +1,20 @@
 angular.module('Clementine')
 .config(['$routeProvider', function($route){
   $route
+    .when('/login', {
+      templateUrl : '/templates/pages/users/login.html',
+      controller  : 'UserLoginController'
+    })
+    .when('/logout', {
+      template    : ' ',
+      controller  : 'UserLogoutController'
+    })
     .when('/orders', {
       redirectTo : '/orders/pending'
     })
-    .when('/proveedores', {
-      templateUrl : '/templates/pages/proveedores/index.html',
-      controller  : 'ProveedoresIndexController'
+    .when('/providers', {
+      templateUrl : '/templates/pages/providers/index.html',
+      controller  : 'ProvidersIndexController'
     })
     .when('/orders/create',{
       templateUrl : '/templates/pages/orders/add.html',

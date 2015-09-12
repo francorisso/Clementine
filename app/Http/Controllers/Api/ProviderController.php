@@ -12,12 +12,17 @@ use App\Classes\ProductsExcelReader;
 use App\Models\Product;
 use App\Models\Provider;
 use App\Models\Order;
+use App\Models\Price;
 
 class ProviderController extends Controller
 {
   const TIMERANGE_YEAR  = 'year';
   const TIMERANGE_MONTH = 'month';
   const TIMERANGE_DAY   = 'day';
+
+  const METRIC_SALES            = 'sales';
+  const METRIC_PRICE_EVOLUTION  = 'price_evolution';
+  const METRIC_PROVIDERS        = 'providers';
 
   /**
    * Display a listing of the resource.
@@ -31,85 +36,29 @@ class ProviderController extends Controller
       return $this->stats($request);
     }
 
-    $proveedores = Provider::orderBy('nombre')->get();
-    return response()->json($proveedores);
-  }
+    $providers = Provider::orderBy('name')->get();
+    foreach ($providers as $provider) {
+      $provider->products = \DB::table('price')
+        ->join('product', 'product.id', '=', 'price.product_id')
+        ->where('price.provider_id', $provider->id)
+        ->groupBy('price.product_id')
+        ->select('product.id', 'product.name')
+        ->get();
 
-  private function stats(Request $request)
-  {
-    $timeRange  = $request->input('time-range', 'year');
-    $perPage    = $request->input('per-page', 10);
-    $page       = $request->input('page', 0);
-    $providerId = $request->input('provider-id', 0);
-    $offset     = $page * $perPage;
-
-    $rows = [];
-    switch ($timeRange) {
-      case self::TIMERANGE_YEAR:
-        $response = $this->statsYearly($request);
-        break;
-    }
-
-    return response()->json($response);
-  }
-
-  private function statsYearly($request)
-  {
-    $year   = $request->input('year', date('Y'));
-    $metric = $request->input('metric', 'quantity');
-
-    $providers = Order::join('order_item','order_item.order_id','=','order.id')
-      ->leftJoin('provider', 'provider.id', '=', 'order.provider_id')
-      ->where('order.date_required', 'LIKE', $year.'-%')
-      ->where('order.status', '!=', 'canceled')
-      ->groupBy('provider_id')
-      ->orderBy('value','desc')
-      ->skip($offset)
-      ->take($perPage);
-    switch ($metric) {
-      case 'quantity':
-        $providers
-          ->select(DB::raw('provider_id, provider.name, count(*) as value'));
-        break;
-      case 'amount':
-        $providers
-          ->select(DB::raw('provider_id, provider.name, sum(price*quantity) as value'));
-        break;
-    }
-    $providers = $providers->get();
-    for ($month=1; $month<=12; $month++) {
-      $date = $year . '-'
-        . ($month<10? '0'.$month : $month)
-        . '-%';
-      $row = [$month . '/' . $year];
-      foreach ($providers as $provider) {
-        $result = Order::select(DB::raw('count(*) as quantity'))
-          ->join('order_item','order_item.order_id','=','order.id')
-          ->where('order.date_required', 'LIKE', $date)
-          ->where('order.status', '!=', 'canceled')
-          ->where('provider_id', '=', $provider->provider_id)
-          ->skip($offset)
-          ->take($perPage);
-        switch ($metric) {
-          case 'quantity':
-            $result
-              ->select(DB::raw('count(*) as value'));
-            break;
-          case 'amount':
-            $result
-              ->select(DB::raw('sum(price*quantity) as value'));
-            break;
-        }
-        $result = $result->first();
-        $row[]  = intval($result->value);
+      $productsCount = \DB::table('price')
+        ->where('price.provider_id', $provider->id)
+        ->groupBy('price.product_id')
+        ->get();
+      $provider->productsCount = count($productsCount);
+      foreach ($provider->products as $product) {
+        $price = Price::where('product_id','=',$product->id)
+          ->where('provider_id', '=', $provider->id)
+          ->orderBy('created_at','desc')
+          ->first();
+        $product->price = $price->price;
       }
-      $rows[] = $row;
     }
-    $response = [
-      'rows' => $rows,
-      'providers' => $providers
-    ];
-    return $response;
+    return response()->json($providers);
   }
 
   /**
@@ -192,5 +141,110 @@ class ProviderController extends Controller
   public function destroy($id)
   {
     //
+  }
+
+
+  //TODO: replace this with a trait
+  private function stats(Request $request)
+  {
+    $metric = $request->input('metric', null);
+
+    $response = [];
+    switch ($metric) {
+      case self::METRIC_SALES:
+        $response = $this->sales($request);
+        break;
+    }
+
+    return response()->json($response);
+  }
+
+  private function sales($request)
+  {
+    //TODO: make this last year from now, not current year
+    $year       = $request->input('year', date('Y'));
+    $graphType  = $request->input('graphType', null);
+    $timeRange  = $request->input('time-range', 'year');
+    $perPage    = $request->input('per-page', 5);
+    $page       = $request->input('page', 0);
+    $providerId = $request->input('product-id', 0);
+    $offset     = $page * $perPage;
+
+    $timeframeLimit = 6;
+    $timeframeUnit = 'months';
+    $timeframe = date('Y-m-d',strtotime('-'.$timeframeLimit.' '.$timeframeUnit));
+
+    $providers = Order::select(
+        DB::raw('provider_id, provider.name, sum(price*quantity) as value')
+      )
+      ->join('order_item','order_item.order_id','=','order.id')
+      ->leftJoin('provider', 'provider.id', '=', 'order.provider_id')
+      ->where('order.date_required', '>=', $timeframe)
+      ->where('order.status', '!=', 'canceled')
+      ->groupBy('provider_id')
+      ->skip($offset)
+      ->take($perPage);
+    switch ($graphType) {
+      case 'last':
+        $providers
+          ->orderBy('value','asc');
+        break;
+      case 'top':
+        $providers
+          ->orderBy('value','desc');
+        break;
+      default:
+        die;
+    }
+    $providers = $providers->get();
+    //TODO: I guess yearly resumes will have to change this...
+    $month    = intval(date('m', strtotime($timeframe)));
+    $year     = intval(date('Y', strtotime($timeframe)));
+    $today    = [
+      'year'  => date('Y'),
+      'month' => intval(date('m')),
+    ];
+    while (
+      $year<$today['year'] ||
+      ($year==$today['year'] && $month<=$today['month'])
+    ) {
+      $date = $year . '-' . ($month<10? '0' : '') . $month . '-%';
+      $row  = [$month . '/' . $year];
+      $month++;
+      if ($month>12) {
+        $month = 1;
+        $year++;
+      }
+      foreach ($providers as $provider) {
+        $result = Order::select(DB::raw('sum(price * quantity) as value'))
+          ->join('order_item','order_item.order_id','=','order.id')
+          ->where('order.provider_id', '=', $provider->provider_id)
+          ->where('order.date_required', 'LIKE', $date)
+          ->where('order.status', '!=', 'canceled')
+          ->first();
+        $row[]  = (empty($result)? 0 : intval($result->value));
+      }
+      $rows[] = $row;
+    }
+    $columns   = [];
+    $columns[] = [
+      'name'     => 'Fecha',
+      'dataType' => 'string'
+    ];
+    foreach ($providers as $provider) {
+      $columns[] = [
+        'name'     => $provider->name,
+        'dataType' => 'number'
+      ];
+    }
+    $title = $request->input('title',false);
+    $response = [
+      'title'       => $title,
+      'vAxisTitle'  => '$',
+      'hAxisTitle'  => 'Fecha',
+      'rows'        => $rows,
+      'columns'     => $columns,
+    ];
+    return $response;
   }
 }

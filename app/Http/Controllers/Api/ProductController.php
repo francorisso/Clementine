@@ -19,9 +19,9 @@ class ProductController extends Controller
   const TIMERANGE_MONTH = 'month';
   const TIMERANGE_DAY   = 'day';
 
-  const METRIC_SALES  = 'sales';
-  const METRIC_PRICE_EVOLUTION = 'price_evolution';
-  const METRIC_PROVIDERS   = 'providers';
+  const METRIC_SALES            = 'sales';
+  const METRIC_PRICE_EVOLUTION  = 'price_evolution';
+  const METRIC_PROVIDERS        = 'providers';
 
   /**
    * Display a listing of the resource.
@@ -165,7 +165,6 @@ class ProductController extends Controller
   private function sales($request)
   {
     //TODO: make this last year from now, not current year
-    $year       = $request->input('year', date('Y'));
     $graphType  = $request->input('graphType', 'quantity');
     $timeRange  = $request->input('time-range', 'year');
     $perPage    = $request->input('per-page', 5);
@@ -173,42 +172,54 @@ class ProductController extends Controller
     $providerId = $request->input('product-id', 0);
     $offset     = $page * $perPage;
 
+    //TODO: fix this, dates should be requested
+    $timeframeLimit = 6;
+    $timeframeUnit = 'months';
+    $timeframe = date('Y-m-01 00:00:00',strtotime('-'.$timeframeLimit.' '.$timeframeUnit));
     $products = OrderItem::select(DB::raw('product_id, product.name, sum(price*quantity) as value'))
       ->join('order','order_item.order_id','=','order.id')
       ->leftJoin('product', 'product.id', '=', 'order_item.product_id')
-      ->where('order.date_required', 'LIKE', $year.'-%')
+      ->where('order.date_required', '>=', $timeframe)
       ->where('order.status', '!=', 'canceled')
       ->groupBy('product_id')
       ->skip($offset)
       ->take($perPage);
     switch ($graphType) {
       case 'last':
-        $title = 'Productos menos vendidos';
         $products
           ->orderBy('value','asc');
         break;
       case 'top':
-        $title = 'Productos mas vendidos';
         $products
           ->orderBy('value','desc');
         break;
     }
+    //TODO: I guess yearly resumes will have to change this...
     $products = $products->get();
-    for ($month=1; $month<=12; $month++) {
-      $date = $year . '-'
-        . ($month<10? '0'.$month : $month)
-        . '-%';
-      $row = [$month . '/' . $year];
+    $month    = intval(date('m', strtotime($timeframe)));
+    $year     = intval(date('Y', strtotime($timeframe)));
+    $today    = [
+      'year'  => date('Y'),
+      'month' => intval(date('m')),
+    ];
+    while (
+      $year<$today['year'] ||
+      ($year==$today['year'] && $month<=$today['month'])
+    ) {
+      $date = $year . '-' . ($month<10? '0' : '') . $month . '-%';
+      $row  = [$month . '/' . $year];
+      $month++;
+      if ($month>12) {
+        $month = 1;
+        $year++;
+      }
       foreach ($products as $product) {
         $result = OrderItem::select(DB::raw('product_id, sum(price*quantity) as value'))
           ->join('order','order_item.order_id','=','order.id')
-          ->leftJoin('product', 'product.id', '=', 'order_item.product_id')
           ->where('order_item.product_id', '=', $product->product_id)
           ->where('order.date_required', 'LIKE', $date)
           ->where('order.status', '!=', 'canceled')
-          ->groupBy('product_id')
-          ->skip($offset)
-          ->take($perPage);
+          ->groupBy('product_id');
         $result = $result->first();
         $row[]  = (empty($result)? 0 : intval($result->value));
       }
@@ -225,7 +236,7 @@ class ProductController extends Controller
         'dataType' => 'number'
       ];
     }
-    $title = $request->input('title',false);
+    $title    = $request->input('title', null);
     $response = [
       'title'       => $title,
       'vAxisTitle'  => '$',
