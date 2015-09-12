@@ -71,13 +71,11 @@ class UsersTableSeeder extends Seeder {
         'name' => 'Paola',
         'email' => 'paolastariolo@gmail.com',
         'password' => 'EstaEsLaDieteticaHabitosDigital',
-        'code' => uniqid(),
       ],
       [
         'name' => 'Mariana',
         'email' => 'mariana@720desarrollos.com',
         'password' => 'EstaEsLaDieteticaHabitosDigital',
-        'code' => uniqid(),
       ]
     ];
     foreach ($users as $data) {
