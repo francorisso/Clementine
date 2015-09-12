@@ -1,5 +1,6 @@
 vendor
 node_modules
 config/app.php
+config/database.php
 Homestead.yaml
 .env
