@@ -5,7 +5,7 @@ angular.module('Clementine',[
   'ngSanitize',
   'ngMdIcons'
 ])
-.controller('AppCtrl',function($scope, $mdUtil, $mdSidenav, $location, $mdToast){
+.controller('AppCtrl',function($scope, $mdUtil, $mdSidenav, $location, $mdToast, User){
   $scope.toggleLeft = buildToggler('left');
   /**
    * Build handler to open/close a SideNav; when animation finishes
@@ -31,4 +31,12 @@ angular.module('Clementine',[
     $location.path(url);
     $scope.closeNavigation('left');
   };
+
+  $scope.user = null;
+  $scope.$on('$routeChangeStart', function(next, current) {
+    User.getInfo().then(function(res){
+      $scope.user = res.data.user;
+    });
+  });
+
 });

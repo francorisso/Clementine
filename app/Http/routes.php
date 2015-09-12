@@ -30,6 +30,7 @@ function(){
   Route::resource('order', 'OrderController');
   Route::resource('order-item', 'OrderItemController');
   Route::resource('provider', 'ProviderController');
+  Route::resource('user', 'UserController');
 
   Route::get('createtoken', function () {
     return csrf_token();

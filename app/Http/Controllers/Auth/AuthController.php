@@ -32,7 +32,12 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => 'getLogout']);
+        $this->middleware('guest', [
+            'except' => [
+                'getLogout',
+                'getUserinfo'
+            ]
+        ]);
     }
 
     /**
@@ -118,5 +123,16 @@ class AuthController extends Controller
         Auth::logout();
 
         return response()->json(['success'=>1]);
+    }
+
+    public function getUserinfo()
+    {
+        $res = [
+            'user' => null
+        ];
+        if (Auth::check()) {
+            $res['user'] = Auth::user();
+        }
+        return response()->json($res);
     }
 }

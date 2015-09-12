@@ -17,12 +17,8 @@
         <md-button class="md-icon-button" aria-label="Settings" ng-click="toggleLeft()">
           <ng-md-icon icon="menu" style="fill:#fff"></ng-md-icon>
         </md-button>
-        <h2>
-          <span>Clementine</span>
-        </h2>
-        <md-button class="md-icon-button" aria-label="Logout" ng-click="navigateTo('/logout')">
-          <ng-md-icon icon="logout" style="fill:#fff"></ng-md-icon>
-        </md-button>
+        <span flex>Clementine</span>
+        <user-top-info user=user></user-top-info>
       </div>
     </md-toolbar>
     <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
@@ -80,6 +76,7 @@
     <script src="/javascript/directives/product-list.js"></script>
     <script src="/javascript/directives/product-import.js"></script>
     <script src="/javascript/directives/provider-list.js"></script>
+    <script src="/javascript/directives/user-top-info.js"></script>
     <script src="/javascript/directives/chart/product.js"></script>
     <script src="/javascript/directives/chart/provider.js"></script>
     <script src="/javascript/services/product.js"></script>

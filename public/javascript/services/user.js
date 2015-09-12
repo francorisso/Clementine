@@ -19,6 +19,14 @@ angular.module('Clementine')
         method : 'GET',
         url    : '/auth/logout'
       });
+    },
+
+    getInfo: function()
+    {
+      return $http({
+        method : 'GET',
+        url    : '/auth/userinfo'
+      });
     }
 
   };

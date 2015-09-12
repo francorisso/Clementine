@@ -1,0 +1,9 @@
+<md-button
+  class="md-icon-button"
+  aria-label="Logout"
+  ng-click="logout()"
+  ng-show="user"
+>
+  <ng-md-icon icon="logout" style="fill:#fff"></ng-md-icon>
+</md-button>
+<span ng-show="user" flex>{{ user.name }}</span>
